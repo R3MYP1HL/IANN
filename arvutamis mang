@@ -1,0 +1,121 @@
+import random  # random et valida numbrid suvakalt.
+
+def addition():  # Liitmine
+    while True:  # Tsükkel
+        # Valib 1-10 liitmise jaoks
+        a = random.randint(1, 10)
+        b = random.randint(1, 10)
+        print(a, "+", b)  # Kirjutab arvutuse välja et sa näeksid.
+        
+        # Kontrollige, kas kasutaja sisestab numbri
+        try:
+            user_input = int(input("Mis sa arvad, mis on vastus? "))
+        except ValueError:
+            print("Viga: Palun sisesta number!")  # Kui sisestatakse täheline väärtus
+            continue  # Küsib vastust uuesti
+
+        if user_input == (a + b):  # Arvuti arvutab ära ja vaatab, kas vastus on õige.
+            print("Sa olid õige!")  # Ütleb, et vastus on õige.
+            break  # Kui vastus on õige, siis väljub tsüklist
+        else:
+            print(f"Sa arvasid valesti. Õige vastus on: {a + b}")
+            continue  # Kui vastus on vale, siis küsib sama küsimust uuesti
+
+def subtraction():  # Lahutamine
+    while True:  # Tsükkel
+        # Valib 1-10 lahutamise jaoks
+        a = random.randint(1, 10)
+        b = random.randint(1, 10)
+        print(a, "-", b)  # Kirjutab arvutuse välja et sa näeksid.
+        
+        # Kontrollige, kas kasutaja sisestab numbri
+        try:
+            user_input = int(input("Mis sa arvad, mis on vastus? "))
+        except ValueError:
+            print("Viga: Palun sisesta number!")
+            continue  # Kui sisestatakse täheline väärtus
+
+        if user_input == (a - b):  # Arvuti arvutab ära ja vaatab, kas vastus on õige.
+            print("Sa olid õige!")
+            break  # Kui vastus on õige, siis väljub tsüklist
+        else:
+            print(f"Sa arvasid valesti. Õige vastus on: {a - b}")
+            continue  # Kui vastus on vale, siis küsib sama küsimust uuesti
+
+def multiplication():  # Korrutamine
+    while True:  # Tsükkel
+        # Valib 1-10 korrutamise jaoks
+        a = random.randint(1, 10)
+        b = random.randint(1, 10)
+        print(a, "x", b)  # Kirjutab arvutuse välja et sa näeksid.
+        
+        # Kontrollige, kas kasutaja sisestab numbri
+        try:
+            user_input = int(input("Mis sa arvad, mis on vastus? "))
+        except ValueError:
+            print("Viga: Palun sisesta number!")
+            continue  # Kui sisestatakse täheline väärtus
+
+        if user_input == (a * b):  # Arvuti arvutab ära ja vaatab, kas vastus on õige.
+            print("Sa olid õige!")
+            break  # Kui vastus on õige, siis väljub tsüklist
+        else:
+            print(f"Sa arvasid valesti. Õige vastus on: {a * b}")
+            continue  # Kui vastus on vale, siis küsib sama küsimust uuesti
+
+def division():  # Jagamine
+    while True:  # Tsükkel
+        # Valib 1-10 lahutamise jaoks
+        b = random.randint(1, 10)
+        a = b * random.randint(1, 10)
+        print(a, "/", b)  # Kirjutab arvutuse välja et sa näeksid.
+        correct_answer = round(a / b)  # Arvuti arvutab ära ja vaatab kas vastus on õige.
+        
+        # Kontrollige, kas kasutaja sisestab numbri
+        try:
+            user_input = int(input("Mis sa arvad, mis on vastus? "))
+        except ValueError:
+            print("Viga: Palun sisesta number!")
+            continue  # Kui sisestatakse täheline väärtus
+
+        if user_input == correct_answer:
+            print("Sa olid õige!")
+            break  # Kui vastus on õige, siis väljub tsüklist
+        else:
+            print(f"Sa arvasid valesti. Õige vastus on: {correct_answer}")
+            continue  # Kui vastus on vale, siis küsib sama küsimust uuesti
+
+def main():  # Valimis ekraan
+    while True:  # Tsükkel
+        print("\nVali tehe:")
+        print("1. Liitmine (+)")  # Näitab mängijale, mida ta saab valida.
+        print("2. Lahutamine (-)")
+        print("3. Korrutamine (x)") 
+        print("4. Jagamine (/)")
+
+        while True:  # Tsükkel, mis jätkab, kuni mängija sisestab õige numbri (1-4)
+            operation = input("Sisesta number (1-4) vastava tehte jaoks: ")  # Saad valida, mis arvutamist sa tahad teha valides 1-4.
+            
+            if operation == '1':  # Liitmine
+                addition()
+                break  # Kui mängija on õige numbri sisestanud, liigu arvutuste juurde
+            elif operation == '2':  # Lahutamine
+                subtraction()
+                break
+            elif operation == '3':  # Korrutamine
+                multiplication()
+                break
+            elif operation == '4':  # Jagamine
+                division()
+                break
+            else:
+                print("Seda ei saa valida!")  # Kui kirjutad midagi muu kui 1-4 valimis ekraanil.
+        
+        # Küsi pärast arvutuse lõppu, kas mängija tahab proovida mõnda muud arvutust
+        try_again = input("\nKas tahad proovida mõnda muud arvutamist? jah/ei: ").lower()  # Kas minna valimis ekraanile
+        if try_again != "jah":  # Kui mängija valib mitte-jah, siis tänab ta mängimist
+            print("Aitäh mängimast!")
+            break
+
+if __name__ == "__main__":
+    main()
