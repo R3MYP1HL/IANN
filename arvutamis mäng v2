@@ -1,0 +1,189 @@
+import random
+import time
+import threading
+
+# Funktsioon, mis kuvab menüü pärast iga tehte tegemist või aja lõppemist
+def post_operation_menu():
+    while True:
+        try_again = input("\n1. Kas sa tahad uuesti mängida sama tehtega\n2. Kas sa tahad midagi uut proovida\n3. Sa ei taha mängida\nSisesta 1/2/3: ").lower()
+
+        if try_again == "1":
+            return True  # Tagastab True, et teha sama tehet uuesti
+        elif try_again == "2":
+            return False  # Tagastab False, et minna tagasi peamenüüsse
+        elif try_again == "3":
+            print("Aitäh mängimast!")
+            exit()  # Lõpetab mängu
+        else:
+            print("Palun vali 1, 2 või 3!")  # Käitleb vale sisendi
+
+# Taimeri funktsioon, mis kontrollib, kas aeg on lõppenud
+def timer(time_limit, response_event):
+    time.sleep(time_limit)
+    if not response_event.is_set():
+        print(f"\nAeg on läbi! Sa ei jõudnud vastata {time_limit} sekundi jooksul. Sisesta midagi, et jätkata.")
+        response_event.set()  # Peatab sisendi, kui aeg on lõppenud
+
+# Funktsioon liitmise (addition) jaoks
+def addition():
+    a = random.randint(1, 10)
+    b = random.randint(1, 10)
+    print(f"{a} + {b}")
+
+    response_event = threading.Event()
+    timer_thread = threading.Thread(target=timer, args=(10, response_event))
+    timer_thread.start()  # Käivitab taimeri
+
+    try:
+        user_input = int(input(f"Mis sa arvad, mis on vastus? (Aeg on 10 sekundit): "))
+        response_event.set()  # Kui mängija vastab, peatab taimer
+    except ValueError:
+        print("Viga: Palun sisesta number!")
+        if not post_operation_menu():
+            return main()  # Läheb tagasi peamenüüsse, kui on vale sisend
+
+    if response_event.is_set():
+        if user_input == (a + b):
+            print("Sa olid õige!")
+        else:
+            print(f"Sa arvasid valesti. Õige vastus on: {a + b}")
+        if post_operation_menu():
+            addition()  # Kui mängija valib, et tahab sama tehet teha uuesti
+        else:
+            main()  # Läheb tagasi peamenüüsse
+
+    else:
+        print("Aeg on läbi. Sa ei jõudnud vastata.")
+        if post_operation_menu():
+            addition()  # Kui aeg sai läbi, teeb sama tehte uuesti
+        else:
+            main()  # Läheb tagasi peamenüüsse
+
+# Funktsioon lahutamise (subtraction) jaoks
+def subtraction():
+    a = random.randint(1, 10)
+    b = random.randint(1, 10)
+    print(f"{a} - {b}")
+
+    response_event = threading.Event()
+    timer_thread = threading.Thread(target=timer, args=(10, response_event))
+    timer_thread.start()
+
+    try:
+        user_input = int(input(f"Mis sa arvad, mis on vastus? (Aeg on 10 sekundit): "))
+        response_event.set()
+    except ValueError:
+        print("Viga: Palun sisesta number!")
+        if not post_operation_menu():
+            return main()
+
+    if response_event.is_set():
+        if user_input == (a - b):
+            print("Sa olid õige!")
+        else:
+            print(f"Sa arvasid valesti. Õige vastus on: {a - b}")
+        if post_operation_menu():
+            subtraction()
+        else:
+            main()
+    else:
+        print("Aeg on läbi. Sa ei jõudnud vastata.")
+        if post_operation_menu():
+            subtraction()
+        else:
+            main()
+
+# Funktsioon korrutamise (multiplication) jaoks
+def multiplication():
+    a = random.randint(1, 10)
+    b = random.randint(1, 10)
+    print(f"{a} x {b}")
+
+    response_event = threading.Event()
+    timer_thread = threading.Thread(target=timer, args=(10, response_event))
+    timer_thread.start()
+
+    try:
+        user_input = int(input(f"Mis sa arvad, mis on vastus? (Aeg on 10 sekundit): "))
+        response_event.set()
+    except ValueError:
+        print("Viga: Palun sisesta number!")
+        if not post_operation_menu():
+            return main()
+
+    if response_event.is_set():
+        if user_input == (a * b):
+            print("Sa olid õige!")
+        else:
+            print(f"Sa arvasid valesti. Õige vastus on: {a * b}")
+        if post_operation_menu():
+            multiplication()
+        else:
+            main()
+    else:
+        print("Aeg on läbi. Sa ei jõudnud vastata.")
+        if post_operation_menu():
+            multiplication()
+        else:
+            main()
+
+# Funktsioon jagamise (division) jaoks
+def division():
+    b = random.randint(1, 10)
+    a = b * random.randint(1, 10)
+    print(f"{a} / {b}")
+    correct_answer = round(a / b)
+
+    response_event = threading.Event()
+    timer_thread = threading.Thread(target=timer, args=(10, response_event))
+    timer_thread.start()
+
+    try:
+        user_input = int(input(f"Mis sa arvad, mis on vastus? (Aeg on 10 sekundit): "))
+        response_event.set()
+    except ValueError:
+        print("Viga: Palun sisesta number!")
+        if not post_operation_menu():
+            return main()
+
+    if response_event.is_set():
+        if user_input == correct_answer:
+            print("Sa olid õige!")
+        else:
+            print(f"Sa arvasid valesti. Õige vastus on: {correct_answer}")
+        if post_operation_menu():
+            division()
+        else:
+            main()
+    else:
+        print("Aeg on läbi. Sa ei jõudnud vastata.")
+        if post_operation_menu():
+            division()
+        else:
+            main()
+
+# Peamenüü funktsioon
+def main():
+    while True:
+        print("\nVali tehe:")
+        print("1. Liitmine (+)")
+        print("2. Lahutamine (-)")
+        print("3. Korrutamine (x)")
+        print("4. Jagamine (/)")
+
+        operation = input("Sisesta number (1-4) vastava tehte jaoks: ")
+
+        if operation == '1':
+            addition()  # Liitmise tegemine
+        elif operation == '2':
+            subtraction()  # Lahutamise tegemine
+        elif operation == '3':
+            multiplication()  # Korrutamise tegemine
+        elif operation == '4':
+            division()  # Jagamise tegemine
+        else:
+            print("Seda ei saa valida!")  # Vale sisendi käitlemine
+
+if __name__ == "__main__":
+    main()
+
